@@ -9,6 +9,10 @@ SECRET_KEY = 'django-insecure-284n^dwcj7we)ny7ucj&@=qnz#olyw*g8e+e)(__!g_h46^fu!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://soilmonitor.onrender.com/"]
+CSRF_TRUSTED_ORIGINS = [ "https://https://soilmonitor.onrender.com/"]
 TIME_ZONE = 'Asia/Dhaka' 
 USE_TZ = True
 
