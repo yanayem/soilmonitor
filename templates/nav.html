@@ -23,12 +23,12 @@
 </head>
 <body class="bg-gray-200 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-500">
 
-  <!-- Navbar -->
+  
   <nav id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-gray-200 dark:bg-slate-900/90">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16 items-center">
 
-        <!-- Logo -->
+      
         <div class="flex items-center gap-3">
           <img src="{% static 'media/logo.png' %}" alt="logo" class="w-10 h-10 object-cover">
           <span class="font-bold text-xl text-slate-900 dark:text-slate-100">
@@ -36,35 +36,34 @@
           </span>
         </div>
 
-        <!-- Desktop Menu -->
+     
         <div class="hidden md:flex flex-1 justify-center items-center gap-10">
           <ul class="flex gap-10">
             <li><a href="{% url 'homepage' %}" class="nav-link">Home</a></li>
             <li><a href="{% url 'soil_types' %}" class="nav-link">Soil Type</a></li>
-            <li><a href="" class="">Weather</a></li>
+            <li><a href="{% url 'weatherpage' %}" class="nav-link">Weather</a></li>
             <li><a href="{% url 'aboutpage' %}" class="nav-link">About Us</a></li>
           </ul>
         </div>
 
-        <!-- Right Side Buttons + Theme Toggle -->
+        
         <div class="hidden md:flex items-center gap-3">
           <a href="{% url 'account:login' %}?mode=login" class="px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary/80 transition">Login</a>
           <a href="{% url 'account:login' %}?mode=signup" class="px-4 py-2 rounded-lg bg-secondary text-white hover:bg-secondary/80 transition">Sign Up</a>
 
-          <!-- Theme Toggle Button -->
+         
           <button id="themeToggle" class="px-3 py-2 rounded bg-gray-300 dark:bg-slate-700 text-slate-900 dark:text-slate-100 transition text-xl">
             🌙
           </button>
         </div>
 
-        <!-- Mobile Menu Button -->
+        
         <div class="md:hidden flex items-center gap-2">
           <button id="themeToggleMobile" class="px-3 py-2 rounded bg-gray-300 dark:bg-slate-700 text-slate-900 dark:text-slate-100 transition text-xl">🌙</button>
           <button id="mobileMenuBtn" class="text-2xl focus:outline-none">&#9776;</button>
         </div>
       </div>
 
-      <!-- Mobile menu -->
       <div id="mobileMenu" class="hidden md:hidden mt-2 flex flex-col gap-2 bg-gray-100 dark:bg-slate-900/90 rounded-lg shadow-lg p-4">
         <a href="{% url 'homepage' %}" class="mobile-link">Home</a>
         <a href="{% url 'soil_types' %}" class="mobile-link">Soil Type</a>
@@ -81,40 +80,34 @@
 <script>
   const html = document.documentElement;
   const themeBtns = [document.getElementById('themeToggle'), document.getElementById('themeToggleMobile')];
-
-  // Set theme and update icons
   function setTheme(theme) {
     if(theme === 'dark') {
       html.classList.add('dark');
-      themeBtns.forEach(btn => btn.textContent = '🌙'); // Moon icon
+      themeBtns.forEach(btn => btn.textContent = '🌙'); 
     } else {
       html.classList.remove('dark');
-      themeBtns.forEach(btn => btn.textContent = '🌞'); // Sun icon
+      themeBtns.forEach(btn => btn.textContent = '🌞'); 
     }
     localStorage.setItem('theme', theme);
   }
 
-  // Load saved theme
+
   const savedTheme = localStorage.getItem('theme') || 'dark';
   setTheme(savedTheme);
 
-  // Toggle theme on button click
+ 
   themeBtns.forEach(btn => btn.addEventListener('click', () => {
     setTheme(html.classList.contains('dark') ? 'light' : 'dark');
   }));
 
-  // =========================
-  // Navbar scroll shadow
-  // =========================
+
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     if(window.scrollY > 10) navbar.classList.add('shadow-lg', 'bg-gray-200 dark:bg-slate-800/90');
     else navbar.classList.remove('shadow-lg', 'bg-gray-200 dark:bg-slate-800/90');
   });
 
-  // =========================
-  // Nav link underline
-  // =========================
+
   const activeColor = 'after:bg-accent';
   const hoverColor = 'after:bg-primary';
   function initLinks(selector) {
@@ -149,9 +142,7 @@
   initLinks('.nav-link');
   initLinks('.mobile-link');
 
-  // =========================
-  // Mobile menu toggle
-  // =========================
+
   const mobileMenuBtn = document.getElementById('mobileMenuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
   mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));

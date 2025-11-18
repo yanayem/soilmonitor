@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'account',
     'soilcore',
     'soildata', 
+    'weather'
 
 
 ]
@@ -108,6 +109,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = 'staticfile'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -124,3 +128,27 @@ CHANNEL_LAYERS = {
 }
 
 
+# -------------------------
+# Login URLs (used by @login_required)
+# -------------------------
+LOGIN_URL = '/accounts/login/'  # Default login page
+LOGIN_REDIRECT_URL = '/soildata/dashboard/'  # Redirect after login
+
+# -------------------------
+# Weather API Settings
+# -------------------------
+OPENWEATHER_API_KEY = "963804a07802e5371e2a2bd19f6a7afb"
+WEATHER_CACHE_SECONDS = 900  # 15 min cache
+
+# -------------------------
+# Google Custom Search API Settings
+# -------------------------
+
+
+SEARCH_ENGINE_ID = "d4f67ec45810c4c76"
+
+# -------------------------
+# Chat / OpenAI / Gemini
+# -------------------------
+GEMINI_API_KEY = "AIzaSyAtdLvDmDGkLiQTf0WET-rpRxnOTFEPUQk"
+CHAT_HISTORY_LIMIT = 50

@@ -1,27 +1,105 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DashBoard</title>
-   <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              lightbg: "#ffffff",
-              darkbg: "#000000",
-            },
-          },
-        },
-      };
-    </script>
+  <title>Dashboard | Modern</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class' }</script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body class="transition-colors duration-500 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+
   {% include "sidebar.html" %}
-  
+
+  <div class="mt-28 max-w-7xl md:ml-64 mx-auto px-6">
+
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-accent">Welcome, {{ user.first_name|default:user.username }}</h1>
+      <p class="text-gray-500 dark:text-gray-400">{{ profile.role|default:"Soil Analyst" }}</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-md hover:shadow-xl transition">
+        <h2 class="text-lg font-semibold text-gray-500 dark:text-gray-400">Soil Types</h2>
+        <p class="text-3xl font-bold mt-2">{{ total_soil_types }}</p>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-md hover:shadow-xl transition">
+        <h2 class="text-lg font-semibold text-gray-500 dark:text-gray-400">Predictions</h2>
+        <p class="text-3xl font-bold mt-2">{{ total_predictions }}</p>
+      </div>
+    </div>
+    <div class="mb-8 p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-md">
+      <h2 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Crop Health Risk Distribution</h2>
+      <canvas id="riskChart" class="w-full h-64"></canvas>
+      <script>
+        const ctx = document.getElementById('riskChart').getContext('2d');
+        const riskData = {{ risk_counts|safe }};
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: Object.keys(riskData),
+            datasets: [{
+              label: 'Predictions',
+              data: Object.values(riskData),
+              backgroundColor: ['#10B981', '#FACC15', '#EF4444'],
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } }
+          }
+        });
+      </script>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-md">
+        <h2 class="text-lg font-semibold mb-4">Recent Soil Types</h2>
+        <ul class="list-disc list-inside">
+          {% for soil in recent_soil_types %}
+            <li>{{ soil.name }} (pH: {{ soil.ph_min }} - {{ soil.ph_max }})</li>
+          {% empty %}
+            <li>No soil types yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-md">
+        <h2 class="text-lg font-semibold mb-4">Recent Predictions</h2>
+        <ul class="list-disc list-inside">
+          {% for pred in recent_predictions %}
+            {% for pred in recent_predictions %}
+  {% if pred.soil_type %}
+    <li>{{ pred.soil_type.name }}: {{ pred.risk_level }}</li>
+  {% else %}
+    <li>Unknown: {{ pred.risk_level }}</li>
+  {% endif %}
+{% empty %}
+  <li>No predictions yet.</li>
+{% endfor %}
+
+          {% empty %}
+            <li>No predictions yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-md">
+        <h2 class="text-lg font-semibold mb-4">Recent Posts</h2>
+        <ul class="list-disc list-inside">
+          {% for post in recent_posts %}
+            <li>{{ post.title }}{% if post.name %} ({{ post.name }}){% endif %}</li>
+          {% empty %}
+            <li>No posts yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
 </body>
 </html>

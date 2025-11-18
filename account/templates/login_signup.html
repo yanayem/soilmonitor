@@ -16,120 +16,151 @@
     />
 
     <style>
-      body {
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-attachment: fixed;
+            body {
+              background-size: cover;
+              background-repeat: no-repeat;
+              background-position: center;
+              background-attachment: fixed;
+            }
+
+            .card {
+              background-size: cover;
+              background-position: center;
+              backface-visibility: hidden;
+              transition: transform 0.8s ease;
+            }
+
+            .card-3d-wrapper {
+              perspective: 1000px;
+            }
+
+            .card-3d-wrapper.flipped .front {
+              transform: rotateY(-180deg);
+            }
+
+            .card-3d-wrapper.flipped .back {
+              transform: rotateY(0deg);
+            }
+
+            .back {
+              transform: rotateY(180deg);
+            }
+            @keyframes slide-in-right {
+        0% { transform: translateX(100%); opacity: 0; }
+        100% { transform: translateX(0); opacity: 1; }
       }
 
-      .card {
-        background-size: cover;
-        background-position: center;
-      }
-
-      .card-3d-wrapper {
-        perspective: 1000px;
-      }
-      .card {
-        backface-visibility: hidden;
-        transition: transform 0.8s ease;
-      }
-      .card-3d-wrapper.flipped .front {
-        transform: rotateY(-180deg);
-      }
-      .card-3d-wrapper.flipped .back {
-        transform: rotateY(0deg);
-      }
-      .back {
-        transform: rotateY(180deg);
+      .animate-slide-in-right {
+        animation: slide-in-right 0.5s ease forwards;
       }
     </style>
+  </head>
 
   <body
-    class="bg-gradient-to-br dark:text-gray-100 text-gray-900 from-[#041c32] via-[#04293a] to-[#064663] items-center"
+    class="bg-[#f0f4f8] dark:from-[#041c32] dark:via-[#04293a] dark:to-[#064663] text-gray-900 dark:text-gray-100 flex justify-center items-center min-h-screen px-4"
   >
     {% include "nav.html" %}
 
-    <section class="w-full flex justify-center px-4">
-      {% if messages %}
-      <div class="messages">
-        {% for message in messages %}
-        <p class="{{ message.tags }}">{{ message }}</p>
-        {% endfor %}
+    <section class="w-full flex justify-center top-0">
+      <div class="fixed top-20 right-5 flex flex-col gap-2 z-50">
+        {% if messages %} {% for message in messages %}
+        <div
+          class="max-w-sm w-full px-4 py-3 rounded-lg shadow-lg text-sm {% if message.tags == 'error' %} bg-red-500 text-white {% elif message.tags == 'success' %} bg-green-500 text-white {% elif message.tags == 'warning' %} bg-yellow-400 text-gray-900 {% else %} bg-blue-500 text-white {% endif %} dark:bg-opacity-90 dark:text-gray-100 animate-slide-in-right"
+        >
+          {{ message }}
+        </div>
+        {% endfor %} {% endif %}
       </div>
-      {% endif %}
-
-      <div class="card-3d-wrapper relative w-full max-w-md mt-10" id="card-wrapper">
+      <div
+        class="card-3d-wrapper relative w-full max-w-md mt-4"
+        id="card-wrapper"
+      >
         <!-- LOGIN CARD -->
-
-        <div class="card front absolute w-full h-auto bg-gray-100 dark:bg-[#113f67]/80 
-  text-gray-900 dark:text-gray-900 shadow-2xl rounded-2xl p-8 border border-white/20 backdrop-blur-lg" id="loginCard">
-          
-  <h1 class="text-center text-2xl mb-5 font-semibold">Welcome Back</h1>
+        <div
+          class="card front absolute w-full h-auto bg-gray-100 dark:bg-[#113f67]/80 text-gray-900 dark:text-gray-100 shadow-2xl rounded-2xl p-8 border border-white/20 backdrop-blur-lg"
+          id="loginCard"
+        >
+          <h1 class="text-center text-2xl mb-5 font-semibold">Welcome Back</h1>
           <form id="loginForm" method="post" action="{% url 'account:login' %}">
             {% csrf_token %}
-            <div class="flex items-center bg-white/10 border border-white/20 rounded-lg mb-4 px-3">
-              <i class="fa fa-envelope text-gray-300 pr-2"></i>
+            <div
+              class="flex items-center bg-white/10 border border-white/20 rounded-lg mb-4 px-3"
+            >
+              <i class="fa fa-envelope text-gray-400 pr-2"></i>
               <input
                 type="email"
                 name="username"
                 id="loginEmail"
                 placeholder="Email Address"
                 required
-                class="bg-transparent w-full py-3 outline-none text-gray-900 dark:text-white placeholder-gray-300"
+                class="bg-transparent w-full py-3 outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-300"
               />
             </div>
 
-            <!-- Password -->
             <div class="relative mb-4">
               <div
                 class="flex items-center bg-white/10 border border-white/20 rounded-lg px-3"
               >
-                <i class="fa fa-lock text-gray-300 pr-2"></i>
+                <i class="fa fa-lock text-gray-400 pr-2"></i>
                 <input
                   type="password"
                   id="loginPassword"
                   name="password"
                   placeholder="Password"
                   required
-                  class="bg-transparent w-full py-3 outline-none text-white placeholder-gray-300"
+                  class="bg-transparent w-full py-3 outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-300"
                 />
               </div>
 
               <span
                 onclick="togglePassword('loginPassword', this)"
-                class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-300 hover:text-yellow-400"
+                class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-yellow-400"
               >
                 <i class="fa fa-eye"></i>
               </span>
             </div>
-            
-             <!-- Remember me -->
-            <label class="flex items-center gap-2 text-gray-300 text-sm mb-3">
+
+            <label
+              class="flex items-center gap-2 text-gray-700 dark:text-gray-300 text-sm mb-3"
+            >
               <input type="checkbox" class="accent-green-400" />
               Remember me
             </label>
 
-          <p class="text-right text-green-300 text-sm mb-4">
-              <a href="#" class="hover:text-white">Forgot Password?</a>
+            <p
+              class="text-right text-green-600 dark:text-green-300 text-sm mb-4"
+            >
+              <a href="#" class="hover:text-green-500 dark:hover:text-green-200"
+                >Forgot Password?</a
+              >
             </p>
-            <button type="submit" name="login_submit" class="w-full py-3 rounded-lg bg-gradient-to-r from-green-300 to-cyan-400 text-gray-900 font-semibold hover:scale-[1.03] transition">
+
+            <button
+              type="submit"
+              name="login_submit"
+              class="w-full py-3 rounded-lg bg-gradient-to-r from-green-300 to-cyan-400 text-gray-900 dark:text-gray-900 font-semibold hover:scale-[1.03] transition"
+            >
               Log In
             </button>
 
-            <p class="text-center mt-4 text-gray-200">
+            <p class="text-center mt-4 text-gray-700 dark:text-gray-300">
               Don’t have an account?
-              <a href="#" id="toSignup"  class="text-green-300 font-semibold">Sign Up</a>
+              <a
+                href="#"
+                id="toSignup"
+                class="text-green-600 dark:text-green-300 font-semibold"
+                >Sign Up</a
+              >
             </p>
-
-           
           </form>
         </div>
 
         <!-- SIGNUP CARD -->
-        <div class="card back absolute h-auto w-full bg-[#113f67]/80 text-white shadow-2xl rounded-2xl p-8 border border-white/20 backdrop-blur-lg" id="signupCard">
-           <h1 class="text-center text-2xl mb-5 font-semibold">
+        <div
+          class="card back absolute h-auto w-full bg-gray-100 dark:bg-[#113f67]/80 text-gray-900 dark:text-gray-100 shadow-2xl rounded-2xl p-8 border border-white/20 backdrop-blur-lg"
+          id="signupCard"
+        >
+          <h1 class="text-center text-2xl mb-5 font-semibold">
             Create Account
           </h1>
           <form
@@ -142,28 +173,28 @@
             <div
               class="flex items-center bg-white/10 border border-white/20 rounded-lg mb-4 px-3"
             >
-              <i class="fa fa-user text-gray-300 pr-2"></i>
+              <i class="fa fa-user text-gray-400 pr-2"></i>
               <input
                 type="text"
                 id="fullName"
                 placeholder="Full Name"
                 name="full_name"
                 required
-                 class="bg-transparent w-full py-3 outline-none text-white placeholder-gray-300"
+                class="bg-transparent w-full py-3 outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-300"
               />
             </div>
 
             <div
               class="flex items-center bg-white/10 border border-white/20 rounded-lg mb-4 px-3"
             >
-              <i class="fa fa-envelope text-gray-300 pr-2"></i>
+              <i class="fa fa-envelope text-gray-400 pr-2"></i>
               <input
                 type="email"
                 id="signupEmail"
                 placeholder="Email Address"
                 name="email"
                 required
-                class="bg-transparent w-full py-3 outline-none text-white placeholder-gray-300"
+                class="bg-transparent w-full py-3 outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-300"
               />
             </div>
 
@@ -171,81 +202,94 @@
               <div
                 class="flex items-center bg-white/10 border border-white/20 rounded-lg px-3 mb-4"
               >
-                <i class="fa fa-lock text-gray-300 pr-2"></i>
+                <i class="fa fa-lock text-gray-400 pr-2"></i>
                 <input
-                type="password"
-                id="signupPassword"
-                placeholder="Create Password"
-                name="password1"
-                required
-                class="bg-transparent w-full py-3 outline-none text-white placeholder-gray-300"
-              />
-              <span
-                onclick="togglePassword('signupPassword', this)"
-                class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-300 hover:text-yellow-400"
+                  type="password"
+                  id="signupPassword"
+                  placeholder="Create Password"
+                  name="password1"
+                  required
+                  class="bg-transparent w-full py-3 outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-300"
+                />
+                <span
+                  onclick="togglePassword('signupPassword', this)"
+                  class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-yellow-400"
                 >
-                <i class="fa fa-eye"></i>
-              </span>
+                  <i class="fa fa-eye"></i>
+                </span>
+              </div>
             </div>
 
             <div class="relative mb-4">
               <div
                 class="flex items-center bg-white/10 border border-white/20 rounded-lg px-3 mb-4"
               >
-                <i class="fa fa-lock text-gray-300 pr-2"></i>
+                <i class="fa fa-lock text-gray-400 pr-2"></i>
                 <input
-                type="password"
-                id="confirmPassword"
-                placeholder="Confirm Password"
-                name="password2"
-                required
-                class="bg-transparent w-full py-3 outline-none text-white placeholder-gray-300"
-              />
-              <span
-                class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-300 hover:text-yellow-400"
-                onclick="togglePassword('confirmPassword', this)"
-              >
-                <i class="fa fa-eye"></i>
-              </span>
+                  type="password"
+                  id="confirmPassword"
+                  placeholder="Confirm Password"
+                  name="password2"
+                  required
+                  class="bg-transparent w-full py-3 outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-300"
+                />
+                <span
+                  onclick="togglePassword('confirmPassword', this)"
+                  class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-yellow-400"
+                >
+                  <i class="fa fa-eye"></i>
+                </span>
+              </div>
             </div>
 
-           <div
+            <div
               class="flex items-center bg-white/10 border border-white/20 rounded-lg mb-4 px-3"
             >
-              <i class="fa fa-map-marker-alt text-gray-300 pr-2"></i>
+              <i class="fa fa-map-marker-alt text-gray-400 pr-2"></i>
               <input
                 type="text"
                 name="location"
                 placeholder="Location"
                 required
-                class="bg-transparent w-full py-3 outline-none text-white placeholder-gray-300"
+                class="bg-transparent w-full py-3 outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-300"
               />
             </div>
 
-              <label class="flex items-center gap-2 text-gray-300 text-sm mb-4">
-                <input
-                  required class="accent-green-400"
-                  type="checkbox"
-                  id="agreeTerms"
-                  name="agreeTerms"
-                  required
-                />
-                I agree to the
-                <a href="{% url 'account:terms_privacy' %}" target="_blank" class="link text-green-300"
-                  >Terms & Privacy Policy</a
-                >
-              </label>
+            <label
+              class="flex items-center gap-2 text-gray-700 dark:text-gray-300 text-sm mb-4"
+            >
+              <input
+                type="checkbox"
+                id="agreeTerms"
+                name="agreeTerms"
+                class="accent-green-400"
+                required
+              />
+              I agree to the
+              <a
+                href="{% url 'account:terms_privacy' %}"
+                target="_blank"
+                class="text-green-600 dark:text-green-300 hover:text-green-500 dark:hover:text-green-200"
+                >Terms & Privacy Policy</a
+              >
+            </label>
 
             <input type="hidden" name="username" id="username_hidden" />
 
-            <button type="submit" name="signup_submit" class="w-full py-3 mt-1 rounded-lg bg-gradient-to-r from-green-300 to-cyan-400 text-gray-900 font-semibold hover:scale-[1.03] transition"
+            <button
+              type="submit"
+              name="signup_submit"
+              class="w-full py-3 mt-1 rounded-lg bg-gradient-to-r from-green-300 to-cyan-400 text-gray-900 dark:text-gray-900 font-semibold hover:scale-[1.03] transition"
             >
               Sign Up
             </button>
 
-             <p class="text-center mt-4 text-gray-200">
+            <p class="text-center mt-4 text-gray-700 dark:text-gray-300">
               Already have an account?
-              <a href="#" id="toLogin" class="text-green-300 font-semibold"
+              <a
+                href="#"
+                id="toLogin"
+                class="text-green-600 dark:text-green-300 font-semibold"
                 >Log In</a
               >
             </p>
@@ -289,6 +333,29 @@
           usernameInput.value = emailInput.value;
         });
       }
+
+      function togglePassword(id, el) {
+        const input = document.getElementById(id);
+        if (input.type === "password") {
+          input.type = "text";
+          el.innerHTML = '<i class="fa fa-eye-slash"></i>';
+        } else {
+          input.type = "password";
+          el.innerHTML = '<i class="fa fa-eye"></i>';
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const messages = document.querySelectorAll(
+          "#messagesContainer .message"
+        );
+        messages.forEach((msg) => {
+          setTimeout(() => {
+            msg.classList.add("fade-out");
+            setTimeout(() => msg.remove(), 1000); // remove after fade-out animation
+          }, 10000); // 10000ms = 10 seconds
+        });
+      });
     </script>
     <script src="/static/js/log_sign.js"></script>
   </body>

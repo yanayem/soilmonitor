@@ -1,163 +1,283 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en" class="dark">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Soil Types</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            lightbg: "#ffffff",
-            darkbg: "#000000",
-            lighttext: "#000000",
-            darktext: "#ffffff",
-            card: "#f9f9f9",
-            darkcard: "#111111",
-            border: "#ccc",
-            darkborder: "#333",
-            btn: "#000000",
-            darkbtn: "#ffffff"
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soil Types in Bangladesh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              accent: "#1e40af", 
+              darkblue: "#f0f4f8", 
+              midblue: "#e2e8f0",
+              lightblue: "#cbd5e1",
+              cardblue: "#ffffff", 
+              inputblue: "#f1f5f9", 
+              lighttext: "#0f172a",
+              darkcard: "#14213d", 
+              darkinput: "#1f2c50", 
+              darktext: "#e6f1ff",
+              darkbtn:"#065084",
+            },
           },
         },
-      },
-    };
-  </script>
-</head>
-<body class="bg-lightbg dark:bg-darkbg/90 text-lighttext dark:text-darktext transition-colors duration-500 min-h-screen">
- {%include "nav.html" %}
-  <section class="text-center py-10">
-    <h1 class="text-4xl font-bold">Soil Types in Bangladesh</h1>
-  </section>
+      };
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
 
-  <!-- Search & Filter -->
-  <div class="max-w-5xl mx-auto px-4 mb-6">
-    <div class="p-5 rounded-xl shadow border border-border dark:border-darkborder bg-card dark:bg-darkcard">
-      <input id="searchInput" type="text" placeholder="🔍 Search Soil Type..."
-        class="w-full px-4 py-2 mb-3 rounded-lg bg-lightbg dark:bg-darkbg text-lighttext dark:text-darktext outline-none border border-border dark:border-darkborder" />
+  <body
+    class="bg-darkblue dark:bg-[rgb(15_23_42/var(--tw-bg-opacity))] text-lighttext dark:text-darktext transition-colors duration-500 min-h-screen"
+  >
+    {% include "nav.html" %}
 
-      <div class="flex gap-3">
-        <input id="phMin" type="number" step="0.1" placeholder="Min pH"
-          class="px-3 py-2 rounded border border-border dark:border-darkborder bg-lightbg dark:bg-darkbg text-lighttext dark:text-darktext w-32" />
+    <section class="pt-24 px-4 md:px-10">
+      <div class="max-w-6xl mx-auto">
+        <h1
+          class="text-4xl font-bold text-center mb-8  tex-gray-900 dark:text-accent :dark:drop-shadow-[0_0_15px_#1e40af]"
+        >
+          Soil Types in Bangladesh
+        </h1>
 
-        <input id="phMax" type="number" step="0.1" placeholder="Max pH"
-          class="px-3 py-2 rounded border border-border dark:border-darkborder bg-lightbg dark:bg-darkbg text-lighttext dark:text-darktext w-32" />
+       
+        <div class="flex justify-center mb-6">
+          <a
+            href="{% url 'add_soil_type' %}"
+            class="inline-flex items-center gap-2 bg-gray-700 dark:bg-darkbtn text-white dark:text-darkblue font-semibold px-5 py-2 rounded-xl shadow-lg dark:hover:shadow-darkbtn/50 hover:-translate-y-1 transition-all duration-300"
+          >
+            <i class="fa fa-plus"></i> Add New Soil Type
+          </a>
+        </div>
 
-        <button id="phFilterBtn"
-          class="px-5 py-2 bg-lightbg dark:bg-darkbg border border-border dark:border-darkborder text-lighttext dark:text-darktext rounded-lg">Filter</button>
+        
+        <div
+          class="space-y-3 mb-6 bg-cardblue dark:bg-darkcard/80 backdrop-blur-md p-5 rounded-2xl shadow-lg border border-gray-200/10 dark:border-white/10 transition-colors duration-300"
+        >
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="🔍 Search Soil Type..."
+            class="w-full px-4 py-2 rounded-lg bg-inputblue dark:bg-darkinput text-lighttext dark:text-darktext placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-darkbtn outline-none transition-all duration-300"
+          />
+          <div class="flex flex-wrap gap-3 mt-3">
+            <input
+              type="number"
+              id="phMin"
+              placeholder="Min pH"
+              step="0.1"
+              class="flex-1 min-w-[100px] px-3 py-2 rounded-lg bg-inputblue dark:bg-darkinput text-lighttext dark:text-darktext focus:ring-2 focus:ring-darkbtn outline-none transition-all duration-300"
+            />
+            <input
+              type="number"
+              id="phMax"
+              placeholder="Max pH"
+              step="0.1"
+              class="flex-1 min-w-[100px] px-3 py-2 rounded-lg bg-inputblue  dark:bg-darkinput text-lighttext dark:text-darktext focus:ring-2 focus:ring-darkbtn outline-none transition-all duration-300"
+            />
+            <button
+              id="phFilterBtn"
+              class="px-5 py-2 bg-rose-600 dark:bg-darkbtn/40  text-white dark:text-darkblue font-semibold rounded-lg dark:shadow-md dark:hover:shadow-darkbtn hover:scale-105 transition-all"
+            >
+              <i class="fa fa-filter"></i> Filter
+            </button>
+            <button
+              id="phResetBtn"
+              class="px-5 py-2 bg-midblue dark:bg-lightblue text-gray-900 font-semibold rounded-lg hover:bg-lightblue dark:hover:bg-midblue transition-all"
+            >
+              <i class="fa fa-undo"></i> Reset
+            </button>
+          </div>
+        </div>
 
-        <button id="phResetBtn"
-          class="px-5 py-2 bg-lightbg dark:bg-darkbg border border-border dark:border-darkborder text-lighttext dark:text-darktext rounded-lg">Reset</button>
+        
+        <div
+          class="overflow-x-auto bg-cardblue dark:bg-darkcard/60 backdrop-blur-xl rounded-2xl shadow-[0_0_40px_rgba(30,64,175,0.15)] border border-gray-200/10 dark:border-white/10 transition-colors duration-300"
+        >
+          <table
+            id="soilTable"
+            class="w-full text-sm text-lighttext dark:text-darktext"
+          >
+            <thead
+              class="bg-gray-600 dark:bg-darkbtn  text-white dark:text-darkblue text-left rounded-t-xl"
+            >
+              <tr>
+                <th class="p-3">Name</th>
+                <th class="p-3">Description</th>
+                <th class="p-3 text-center">pH Range</th>
+                <th class="p-3">Suitable Crops</th>
+                <th class="p-3">Location</th>
+                <th class="p-3 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for soil in soil_types %}
+              <tr
+                data-id="{{ soil.id }}"
+                class="border-b border-gray-300 dark:border-slate-800 hover:bg-midblue/50 dark:hover:bg-darkinput/50 hover:shadow-inner dark:hover:shadow-darkbtn/20 transition-all duration-300"
+              >
+                <td class="p-3">{{ soil.name }}</td>
+                <td class="p-3">{{ soil.description }}</td>
+                <td class="p-3 text-center">
+                  {{ soil.ph_min }} - {{ soil.ph_max }}
+                </td>
+                <td class="p-3">{{ soil.suitable_crops }}</td>
+                <td class="p-3">{{ soil.location }}</td>
+                <td class="p-3 flex justify-center gap-3">
+                  <a
+                    href="javascript:void(0)"
+                    class="text-blue dark:text-pink-300 hover:scale-125 transition-all"
+                    title="Edit"
+                    onclick="editRow(this)"
+                  >
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <a
+                    href="javascript:void(0)"
+                    class="text-green-400 hover:scale-125 transition-all hidden"
+                    title="Save"
+                    onclick="saveRow(this)"
+                  >
+                    <i class="fa fa-check"></i>
+                  </a>
+                  <a
+                    href="{% url 'delete_soil_type' soil.id %}"
+                    class="text-red-500 hover:scale-125 transition-all"
+                    title="Delete"
+                  >
+                    <i class="fa fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- Table -->
-  <div class="max-w-5xl mx-auto px-4">
-    <div class="overflow-x-auto p-5 rounded-xl shadow border border-border dark:border-darkborder bg-card dark:bg-darkcard">
-      <table id="soilTable" class="w-full text-left border-collapse">
-        <thead class="bg-lightbg dark:bg-darkbg border-b border-border dark:border-darkborder text-lighttext dark:text-darktext">
-          <tr>
-            <th class="p-3">Name</th>
-            <th class="p-3">Description</th>
-            <th class="p-3 text-center">pH Range</th>
-            <th class="p-3">Crops</th>
-            <th class="p-3">Location</th>
-            <th class="p-3 text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody id="demoBody">
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <script>
-    const demoSoilData = [
-      {id:1,name:"Alluvial Soil",description:"Rich soil near rivers",ph_min:6.0,ph_max:7.5,suitable_crops:"Rice, Wheat",location:"North"},
-      {id:2,name:"Saline Soil",description:"High salt content soil",ph_min:7.0,ph_max:8.5,suitable_crops:"Barley, Sunflower",location:"Coastal"},
-      {id:3,name:"Clay Soil",description:"Heavy and sticky soil",ph_min:6.5,ph_max:7.8,suitable_crops:"Vegetables",location:"Central"},
-      {id:4,name:"Sandy Soil",description:"Light and drains fast",ph_min:5.5,ph_max:7.0,suitable_crops:"Carrot, Radish",location:"South"},
-    ];
-
-    const tbody = document.getElementById("demoBody");
-    function renderTable(data){
-      tbody.innerHTML = "";
-      data.forEach(soil=>{
-        const tr = document.createElement("tr");
-        tr.dataset.id = soil.id;
-        tr.className = "border-b border-border dark:border-darkborder hover:bg-gray-200 dark:hover:bg-gray-700 transition-all";
-        tr.innerHTML = `
-          <td class="p-3">${soil.name}</td>
-          <td class="p-3">${soil.description}</td>
-          <td class="p-3 text-center">${soil.ph_min} - ${soil.ph_max}</td>
-          <td class="p-3">${soil.suitable_crops}</td>
-          <td class="p-3">${soil.location}</td>
-          <td class="p-3 text-center flex justify-center gap-2">
-            <button class="editBtn px-2 py-1 border border-border dark:border-darkborder rounded">Edit</button>
-            <button class="saveBtn px-2 py-1 border border-border dark:border-darkborder rounded hidden">Save</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
+    <script>
+      
+      const inputs = document.querySelectorAll("#searchInput, #phMin, #phMax");
+      inputs.forEach((input) => {
+        input.addEventListener("input", () => {
+          if (input.value.trim() !== "") {
+            input.classList.add("ring-2", "ring-darkbtn", "dark:ring-darkbtn/80");
+          } else {
+            input.classList.remove(
+              "ring-2",
+              "ring-darkbtn",
+              "dark:ring-darkbtn/80"
+            );
+          }
+        });
       });
-    }
 
-    renderTable(demoSoilData);
-
-    // Search
-    document.getElementById("searchInput").addEventListener("keyup", function(){
-      const val = this.value.toLowerCase();
-      Array.from(tbody.rows).forEach(row=>{
-        row.style.display = row.cells[0].innerText.toLowerCase().includes(val) ? "" : "none";
+      const searchInput = document.getElementById("searchInput");
+      searchInput.addEventListener("keyup", () => {
+        const filter = searchInput.value.toLowerCase();
+        document.querySelectorAll("#soilTable tbody tr").forEach((row) => {
+          const name = row.cells[0].textContent.toLowerCase();
+          row.style.display = name.includes(filter) ? "" : "none";
+        });
       });
-    });
 
-    // pH filter
-    document.getElementById("phFilterBtn").addEventListener("click", ()=>{
-      const min = parseFloat(document.getElementById("phMin").value) || -Infinity;
-      const max = parseFloat(document.getElementById("phMax").value) || Infinity;
-      Array.from(tbody.rows).forEach(row=>{
-        const phRange = row.cells[2].innerText.split("-").map(x=>parseFloat(x.trim()));
-        row.style.display = phRange[0]>=min && phRange[1]<=max ? "" : "none";
+      const phMinInput = document.getElementById("phMin");
+      const phMaxInput = document.getElementById("phMax");
+      const phFilterBtn = document.getElementById("phFilterBtn");
+      const phResetBtn = document.getElementById("phResetBtn");
+
+      phFilterBtn.addEventListener("click", () => {
+        const min = phMinInput.value ? parseFloat(phMinInput.value) : -Infinity;
+        const max = phMaxInput.value ? parseFloat(phMaxInput.value) : Infinity;
+        document.querySelectorAll("#soilTable tbody tr").forEach((row) => {
+          const phRange = row.cells[2].textContent
+            .split("-")
+            .map((p) => parseFloat(p.trim()));
+          const phMin = phRange[0] || 0;
+          const phMax = phRange[1] || 14;
+          row.style.display = phMin >= min && phMax <= max ? "" : "none";
+        });
       });
-    });
 
-    // Reset
-    document.getElementById("phResetBtn").addEventListener("click", ()=>{
-      document.getElementById("phMin").value="";
-      document.getElementById("phMax").value="";
-      document.getElementById("searchInput").value="";
-      Array.from(tbody.rows).forEach(row=>row.style.display="");
-    });
+      phResetBtn.addEventListener("click", () => {
+        phMinInput.value = "";
+        phMaxInput.value = "";
+        searchInput.value = "";
+        document
+          .querySelectorAll("#soilTable tbody tr")
+          .forEach((row) => (row.style.display = ""));
+      });
 
-    tbody.addEventListener("click", function(e){
-      const tr = e.target.closest("tr");
-      if(e.target.classList.contains("editBtn")){
-        Array.from(tr.cells).forEach((cell,i)=>{
-          if(i<5){
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          document.cookie.split(";").forEach((cookie) => {
+            if (cookie.trim().startsWith(name + "=")) {
+              cookieValue = decodeURIComponent(
+                cookie.trim().substring(name.length + 1)
+              );
+            }
+          });
+        }
+        return cookieValue;
+      }
+
+      window.editRow = function (btn) {
+        const row = btn.closest("tr");
+        row.querySelectorAll("td").forEach((cell, i) => {
+          if (i < 5) {
             const text = cell.innerText;
-            cell.innerHTML = `<input type='text' value='${text}' class='w-full px-1 py-1 bg-lightbg dark:bg-darkbg text-lighttext dark:text-darktext border border-border dark:border-darkborder rounded'/>`;
+            cell.innerHTML = `<input type='text' value='${text}' class='w-full px-2 py-1 bg-inputblue dark:bg-darkinput text-lighttext dark:text-darktext rounded border border-slate-700 focus:ring-2 focus:ring-darkbtn outline-none transition'/>`;
           }
         });
-        tr.querySelector(".editBtn").classList.add("hidden");
-        tr.querySelector(".saveBtn").classList.remove("hidden");
-      }
-      else if(e.target.classList.contains("saveBtn")){
-        Array.from(tr.cells).forEach((cell,i)=>{
-          if(i<5){
-            const val = cell.querySelector("input").value;
-            cell.innerText = val;
-          }
-        });
-        tr.querySelector(".saveBtn").classList.add("hidden");
-        tr.querySelector(".editBtn").classList.remove("hidden");
-      }
-    });
-  </script>
+        btn.classList.add("hidden");
+        row.querySelector(".fa-check").parentElement.classList.remove("hidden");
+      };
 
-</body>
+      window.saveRow = function (btn) {
+        const row = btn.closest("tr");
+        const id = row.dataset.id;
+        const inputs = row.querySelectorAll("td input");
+        const data = {
+          name: inputs[0].value,
+          description: inputs[1].value,
+          ph_min: inputs[2].value.split("-")[0].trim(),
+          ph_max: inputs[2].value.split("-")[1].trim(),
+          suitable_crops: inputs[3].value,
+          location: inputs[4].value,
+        };
+        fetch(`/soil-types/edit/${id}/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken"),
+          },
+          body: JSON.stringify(data),
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.success) {
+              row.cells[0].innerText = data.name;
+              row.cells[1].innerText = data.description;
+              row.cells[2].innerText = `${data.ph_min} - ${data.ph_max}`;
+              row.cells[3].innerText = data.suitable_crops;
+              row.cells[4].innerText = data.location;
+              btn.classList.add("hidden");
+              row
+                .querySelector(".fa-pencil")
+                .parentElement.classList.remove("hidden");
+            } else alert("Update failed!");
+          })
+          .catch(() => alert("Network error!"));
+      };
+    </script>
+  </body>
 </html>
