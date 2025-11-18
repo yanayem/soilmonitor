@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from account.models import UserProfile
 from soilcore.models import SoilType
-from .models import CropHealthPrediction, CommunityPost
+from .models import CropHealthPrediction
 import json
 
 @login_required
@@ -15,12 +15,10 @@ def dashboard(request):
 
     total_soil_types = SoilType.objects.count()
     total_predictions = CropHealthPrediction.objects.count()
-    total_posts = CommunityPost.objects.count()
 
 
     recent_soil_types = SoilType.objects.all()[:5]
     recent_predictions = CropHealthPrediction.objects.order_by('-predicted_at')[:5]
-    recent_posts = CommunityPost.objects.all()[:5]
 
     risk_counts = {
         "Healthy": CropHealthPrediction.objects.filter(risk_level="Healthy").count(),
@@ -33,10 +31,8 @@ def dashboard(request):
         "profile": profile,
         "total_soil_types": total_soil_types,
         "total_predictions": total_predictions,
-        "total_posts": total_posts,
         "recent_soil_types": recent_soil_types,
         "recent_predictions": recent_predictions,
-        "recent_posts": recent_posts,
         "risk_counts": json.dumps(risk_counts), 
     }
     return render(request, "dashboard.html", context)
