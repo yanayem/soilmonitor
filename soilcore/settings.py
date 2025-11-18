@@ -11,8 +11,13 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ["https://soilmonitor.onrender.com/"]
-CSRF_TRUSTED_ORIGINS = [ "https://https://soilmonitor.onrender.com/"]
+ALLOWED_HOSTS = ["soilmonitor.onrender.com", "localhost", "127.0.0.1"]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://soilmonitor.onrender.com",
+    "http://localhost",
+    "http://127.0.0.1"
+]
 TIME_ZONE = 'Asia/Dhaka' 
 USE_TZ = True
 
